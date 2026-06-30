@@ -7,6 +7,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -56,6 +57,7 @@ const config = {
     process.env.FRONTEND_URL,
     process.env.APP_URL,
     process.env.VERCEL_URL,
+    "https://staynest-172.vercel.app",
     "http://localhost:5173",
     "http://localhost:4173"
   ),
@@ -68,7 +70,9 @@ const config = {
   adminEmail: process.env.ADMIN_EMAIL || "abdulqayyumayinla1707@gmail.com",
   appUrl:
     normalizeOrigin(process.env.APP_URL || process.env.FRONTEND_URL || String(process.env.CLIENT_ORIGIN || "").split(",")[0]) ||
-    "http://localhost:5173",
+    "https://staynest-172.vercel.app",
+  mongodbUri: process.env.MONGODB_URI || process.env.MONGO_URI || "",
+  mongodbDbName: process.env.MONGODB_DB || "staynest",
   codeExpiryMinutes: 15,
   maxVerifyAttempts: 5,
   maxSavedProperties: 100,
@@ -98,6 +102,23 @@ const files = {
   buyInquiries: path.join(__dirname, "buy-inquiries.json"),
   rentInquiries: path.join(__dirname, "rent-inquiries.json"),
   lastVerificationCode: path.join(__dirname, "last-verification-code.txt"),
+};
+
+const dataFileKeys = new Map([
+  [files.users, "users"],
+  [files.pendingVerifications, "pendingVerifications"],
+  [files.savedProperties, "savedProperties"],
+  [files.adminListings, "adminListings"],
+  [files.buyInquiries, "buyInquiries"],
+  [files.rentInquiries, "rentInquiries"],
+]);
+
+const dataStore = {
+  connected: false,
+  client: null,
+  collection: null,
+  cache: new Map(),
+  pendingWrite: Promise.resolve(),
 };
 
 if (config.jwtSecret === "staynest_dev_secret_change_me") {
@@ -176,7 +197,11 @@ const createHttpError = (status, message) => {
   return error;
 };
 
-const readJsonFile = (filePath, fallback = []) => {
+const cloneData = (value) => JSON.parse(JSON.stringify(value));
+
+const getDataFileKey = (filePath) => dataFileKeys.get(filePath) || path.basename(filePath, path.extname(filePath));
+
+const readJsonFileFromDisk = (filePath, fallback = []) => {
   try {
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, JSON.stringify(fallback, null, 2));
@@ -191,10 +216,85 @@ const readJsonFile = (filePath, fallback = []) => {
   }
 };
 
-const writeJsonFile = (filePath, data) => {
+const writeJsonFileToDisk = (filePath, data) => {
   const tempPath = `${filePath}.tmp`;
   fs.writeFileSync(tempPath, JSON.stringify(data, null, 2));
   fs.renameSync(tempPath, filePath);
+};
+
+const persistDocumentToMongo = (key, data) => {
+  if (!dataStore.connected || !dataStore.collection) {
+    return;
+  }
+
+  const payload = cloneData(data);
+  dataStore.pendingWrite = dataStore.pendingWrite
+    .then(() =>
+      dataStore.collection.updateOne(
+        { _id: key },
+        { $set: { data: payload, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
+        { upsert: true }
+      )
+    )
+    .catch((error) => {
+      console.error(`Failed to persist ${key} to MongoDB:`, error);
+    });
+};
+
+const initializeDataStore = async () => {
+  if (!config.mongodbUri) {
+    console.warn("MONGODB_URI is not set. Using local JSON files for backend data.");
+    return;
+  }
+
+  try {
+    dataStore.client = new MongoClient(config.mongodbUri, { serverSelectionTimeoutMS: 10000 });
+    await dataStore.client.connect();
+    dataStore.collection = dataStore.client.db(config.mongodbDbName).collection("appData");
+    dataStore.connected = true;
+
+    await Promise.all(
+      [...dataFileKeys.entries()].map(async ([filePath, key]) => {
+        const localData = readJsonFileFromDisk(filePath, key === "adminListings" ? { buy: [], rent: [], deletedIds: [] } : []);
+        const existingDocument = await dataStore.collection.findOne({ _id: key });
+        const data = existingDocument?.data ?? localData;
+
+        dataStore.cache.set(key, cloneData(data));
+
+        if (!existingDocument) {
+          await dataStore.collection.updateOne(
+            { _id: key },
+            { $set: { data: cloneData(data), updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
+            { upsert: true }
+          );
+        }
+      })
+    );
+
+    console.log(`MongoDB connected. Database: ${config.mongodbDbName}, collection: appData`);
+  } catch (error) {
+    dataStore.connected = false;
+    console.error("MongoDB connection failed. Falling back to local JSON files:", error.message || error);
+  }
+};
+
+const readJsonFile = (filePath, fallback = []) => {
+  const key = getDataFileKey(filePath);
+
+  if (dataStore.cache.has(key)) {
+    return cloneData(dataStore.cache.get(key));
+  }
+
+  const data = readJsonFileFromDisk(filePath, fallback);
+  dataStore.cache.set(key, cloneData(data));
+  return data;
+};
+
+const writeJsonFile = (filePath, data) => {
+  const key = getDataFileKey(filePath);
+  dataStore.cache.set(key, cloneData(data));
+  writeJsonFileToDisk(filePath, data);
+  persistDocumentToMongo(key, data);
 };
 
 const getUsers = () => readJsonFile(files.users, []);

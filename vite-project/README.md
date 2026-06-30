@@ -51,7 +51,7 @@ npm run dev
 
 ### Frontend Config
 Create or edit your client-side environment configurations. In Vite, these must be prefixed with `VITE_` :
-* `VITE_API_URL`: The full URL of the deployed backend API (e.g. `https://staynest-api.onrender.com/api`). Defaults to `http://localhost:5000/api` if not set.
+* `VITE_API_URL`: The full URL of the deployed backend API. For this project: `https://staywild-five.vercel.app/api`.
 
 ### Backend Config
 Configure the Express server by setting these variables (e.g. in your hosting dashboard or local `.env`):
@@ -71,7 +71,7 @@ Deploy the frontend from the root workspace or configure the build settings on V
 * **Build Command**: `npm run build`
 * **Output Directory**: `client/dist`
 * **Environment Variables**: Add `VITE_API_URL` pointing to your deployed backend URL, including `/api`.
-  - Example: `VITE_API_URL=https://staynest-api.onrender.com/api`
+  - Example: `VITE_API_URL=https://staywild-five.vercel.app/api`
   - After changing this variable, redeploy the frontend because Vite reads it at build time.
 
 ### Backend (e.g., Render, Fly.io, VPS)
@@ -79,7 +79,7 @@ Deploy the backend Node server using:
 * **Start Command**: `npm start`
 * **Port**: `5000` (or let Render set it dynamically via `process.env.PORT`)
 * **Environment Variables**: Make sure to set `CLIENT_ORIGIN`, `APP_URL`, `JWT_SECRET`, and Gmail/Brevo settings.
-  - Example: `CLIENT_ORIGIN=https://staynest.vercel.app`
+  - Example: `CLIENT_ORIGIN=https://staynest-172.vercel.app`
   - `CLIENT_ORIGIN` must be the frontend origin only, with no path at the end.
   - The backend also accepts `FRONTEND_URL` as an alias for CORS if your host uses that name.
 
@@ -88,15 +88,15 @@ When the frontend and backend are deployed to different domains, both sides must
 
 1. In the frontend hosting dashboard, set `VITE_API_URL` to the backend API URL:
    ```bash
-   VITE_API_URL=https://your-backend-domain.com/api
+   VITE_API_URL=https://staywild-five.vercel.app/api
    ```
 2. In the backend hosting dashboard, set the allowed frontend URL:
    ```bash
-   CLIENT_ORIGIN=https://your-frontend-domain.com
-   APP_URL=https://your-frontend-domain.com
+   CLIENT_ORIGIN=https://staynest-172.vercel.app
+   APP_URL=https://staynest-172.vercel.app
    ```
 3. Redeploy both services.
-4. Open `https://your-backend-domain.com/api/health`. It should return JSON with `"status": "ok"`.
+4. Open `https://staywild-five.vercel.app/api/health`. It should return JSON with `"status": "ok"`.
 5. Open the frontend browser console. If you see a CORS error, the value in `CLIENT_ORIGIN` does not exactly match the frontend domain shown in the browser address bar.
 
 #### ⚠️ CRITICAL: Persistent Disk Setup (Render/Fly.io)
