@@ -69,14 +69,19 @@ Configure the Express server by setting these variables (e.g. in your hosting da
 ### Frontend (e.g., Vercel, Netlify)
 Deploy the frontend from the root workspace or configure the build settings on Vercel:
 * **Build Command**: `npm run build`
-* **Output Directory**: `dist`
-* **Environment Variables**: Add `VITE_API_URL` pointing to your deployed backend URL.
+* **Output Directory**: `client/dist`
+* **Environment Variables**: Add `VITE_API_URL` pointing to your deployed backend URL, including `/api`.
+  - Example: `VITE_API_URL=https://staynest-api.onrender.com/api`
+  - After changing this variable, redeploy the frontend because Vite reads it at build time.
 
 ### Backend (e.g., Render, Fly.io, VPS)
 Deploy the backend Node server using:
 * **Start Command**: `npm start`
 * **Port**: `5000` (or let Render set it dynamically via `process.env.PORT`)
-* **Environment Variables**: Make sure to set `CLIENT_ORIGIN`, `JWT_SECRET`, and Gmail/Brevo settings.
+* **Environment Variables**: Make sure to set `CLIENT_ORIGIN`, `APP_URL`, `JWT_SECRET`, and Gmail/Brevo settings.
+  - Example: `CLIENT_ORIGIN=https://staynest.vercel.app`
+  - `CLIENT_ORIGIN` must be the frontend origin only, with no path at the end.
+  - The backend also accepts `FRONTEND_URL` as an alias for CORS if your host uses that name.
 
 #### ⚠️ CRITICAL: Persistent Disk Setup (Render/Fly.io)
 Because StayNest uses local JSON files under the `server/` directory as its database, **you must mount a persistent disk/volume** on your hosting provider to prevent data loss whenever the server restarts or redeploys:
