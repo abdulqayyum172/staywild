@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Eye, EyeOff, KeyRound, Loader2, Lock, Mail, User } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -16,10 +16,8 @@ export default function Signup() {
   const [pendingEmail, setPendingEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
 
-  const { signup, verifyEmail, resendCode, adminSignup } = useAuth();
+  const { signup, verifyEmail, resendCode } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [signupType, setSignupType] = useState(location.state?.type || "client");
 
   const isGmailAddress = (value) => {
     const normalized = value.toLowerCase().trim();
@@ -49,22 +47,17 @@ export default function Signup() {
     setIsSubmitting(true);
 
     try {
-      if (signupType === "client") {
-        const result = await signup(name, email, password);
+      const result = await signup(name, email, password);
 
-        if (result?.pendingVerification) {
-          setPendingEmail(result.email || email);
-          setFormNotice(result.message || "Verification code sent. Enter it below to finish signup.");
-          return;
-        }
-
-        navigate("/", { replace: true });
-      } else {
-        await adminSignup(name, email, password);
-        navigate("/admin", { replace: true });
+      if (result?.pendingVerification) {
+        setPendingEmail(result.email || email);
+        setFormNotice(result.message || "Verification code sent. Enter it below to finish signup.");
+        return;
       }
+
+      navigate("/", { replace: true });
     } catch (err) {
-      setFormError(err.message || `Failed to create ${signupType} account. Email might already be taken.`);
+      setFormError(err.message || "Failed to create account. Email might already be taken.");
     } finally {
       setIsSubmitting(false);
     }
@@ -117,12 +110,10 @@ export default function Signup() {
       >
         <div className="flex h-full flex-col justify-end p-12 text-white">
           <p className="text-sm font-semibold uppercase text-emerald-200">
-            {signupType === "client" ? "Client account" : "Admin account"}
+            Client account
           </p>
           <h1 className="mt-3 max-w-xl text-5xl font-bold leading-tight">
-            {signupType === "client"
-              ? "Create an account before requesting private property details."
-              : "Access the administrator dashboard to control listings and view inquiries."}
+            Create an account before requesting private property details.
           </h1>
         </div>
       </section>
@@ -134,37 +125,11 @@ export default function Signup() {
               Stay<span className="text-emerald-700">Nest</span>
             </Link>
             <h2 className="mt-6 text-2xl font-bold text-slate-950">
-              {signupType === "client" ? "Create account" : "Create admin account"}
+              Create account
             </h2>
             <p className="mt-2 text-sm text-slate-500">
-              {signupType === "client"
-                ? "Use a Gmail address to verify your account and access property details."
-                : "Create an administrator account to manage listings, clients, and inquiries."}
+              Use a Gmail address to verify your account and access property details.
             </p>
-          </div>
-
-          <div className="mb-6 grid grid-cols-2 rounded-md border border-slate-200 bg-slate-50 p-1">
-            {[
-              { id: "client", label: "Client Sign Up" },
-              { id: "admin", label: "Admin Sign Up" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => {
-                  setSignupType(tab.id);
-                  setFormError("");
-                  setFormNotice("");
-                }}
-                className={`h-10 rounded-md text-sm font-semibold transition-all duration-200 ${
-                  signupType === tab.id
-                    ? "bg-white text-emerald-700 shadow-sm"
-                    : "text-slate-500 hover:text-slate-800"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
           </div>
 
           {formNotice && (
@@ -300,7 +265,6 @@ export default function Signup() {
             Already have an account?{" "}
             <Link
               to="/login"
-              state={{ type: signupType }}
               className="font-semibold text-emerald-700 hover:text-emerald-800"
             >
               Sign in
@@ -311,3 +275,6 @@ export default function Signup() {
     </main>
   );
 }
+
+
+

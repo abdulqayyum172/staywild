@@ -557,6 +557,7 @@ const seedDefaultUser = () => {
   ]);
 };
 
+await initializeDataStore();
 seedDefaultUser();
 
 const buyProperties = [
