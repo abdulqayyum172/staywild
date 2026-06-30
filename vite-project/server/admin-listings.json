@@ -1,0 +1,34 @@
+{
+  "buy": [
+    {
+      "id": 1782772088349,
+      "title": "complex",
+      "location": "lagos",
+      "price": 40000000,
+      "priceLabel": "NGN 40,000,000",
+      "type": "villa",
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "sizeSqm": 120,
+      "status": "available",
+      "image": "https://www.behance.net/gallery/84683551/Villa-complex-in-Doha",
+      "hero": "https://www.behance.net/gallery/84683551/Villa-complex-in-Doha",
+      "gallery": [
+        "https://www.behance.net/gallery/84683551/Villa-complex-in-Doha"
+      ],
+      "description": "a villa",
+      "features": [
+        "24/7 security"
+      ],
+      "agent": {
+        "name": "Ayinla",
+        "phone": "8121687014",
+        "email": "abdulqayyumayinla@gmail.com"
+      },
+      "source": "admin",
+      "createdBy": "91c3df52-9460-4af4-be81-4d0393e463c0",
+      "createdAt": "2026-06-29T22:28:08.525Z"
+    }
+  ],
+  "rent": []
+}

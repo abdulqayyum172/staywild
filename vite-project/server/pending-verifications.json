@@ -1,0 +1,29 @@
+[
+  {
+    "email": "admin8835@gmail.com",
+    "name": "Ayinlove",
+    "passwordHash": "$2b$10$tTVSpduOjVXM2k8X1o.xiO1NogL4CvJ1TDSIEn50Dy4N6iDahsY6m",
+    "codeHash": "$2b$10$LAYZ85z.2/kTxZ81EsVfXOe.eDivjCVJDEcMCpRnhqMZeNb./njVO",
+    "expiresAt": "2026-06-22T21:59:43.481Z",
+    "attempts": 0,
+    "createdAt": "2026-06-22T21:43:22.528Z"
+  },
+  {
+    "email": "basamboyunus@gmail.com",
+    "name": "basambo",
+    "passwordHash": "$2b$10$5TRbLwHZG88C9ik4VOviVeer4kSOus1qcDp407Hu5wwNwfIazVp6e",
+    "codeHash": "$2b$10$Rv2VRMVMq2RMbf9WCmfOMu4vmf1/d0qYZxi0ZrE8uoDGtg93v/c1C",
+    "expiresAt": "2026-06-23T23:48:37.864Z",
+    "attempts": 0,
+    "createdAt": "2026-06-23T23:33:37.864Z"
+  },
+  {
+    "email": "hameedusman0423@gmail.com",
+    "name": "usman",
+    "passwordHash": "$2b$10$2ploP.R1gv0CGISuMvIrxeIwoox/1LKVCBqtiQ.xbKQweFW6O55WC",
+    "codeHash": "$2b$10$OKHYqDtgqjySdVL1TFnKquXUVnETwdrgNN7BWkoxca6BMFJcDnhWm",
+    "expiresAt": "2026-06-24T00:09:04.125Z",
+    "attempts": 0,
+    "createdAt": "2026-06-23T23:54:04.125Z"
+  }
+]

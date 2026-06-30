@@ -1,0 +1,186 @@
+:root {
+  color-scheme: light;
+  --stay-bg: #f5f7f4;
+  --stay-surface: #ffffff;
+  --stay-panel: #eef3ef;
+  --stay-ink: #111827;
+  --stay-muted: #5f6b7a;
+  --stay-border: #d8ded8;
+  --stay-brand: #0f766e;
+  --stay-brand-dark: #115e59;
+  --stay-accent: #b7791f;
+  --stay-footer: #101820;
+  --stay-shadow: 0 18px 44px rgba(17, 24, 39, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden !important;
+}
+
+body {
+  margin: 0;
+  padding-top: 76px;
+  background: var(--stay-bg);
+  color: var(--stay-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(15, 118, 110, 0.18);
+}
+
+/* App-wide professional mode overrides for the existing Tailwind pages. */
+.bg-purple-50,
+.bg-\[\#f7f4ef\] {
+  background-color: var(--stay-bg) !important;
+}
+
+.bg-purple-100,
+.hover\:bg-purple-100:hover,
+.bg-purple-500\/10 {
+  background-color: rgba(15, 118, 110, 0.1) !important;
+}
+
+.bg-purple-400,
+.bg-purple-500,
+.bg-purple-600,
+.hover\:bg-purple-600:hover,
+.hover\:bg-purple-700:hover,
+.from-purple-600,
+.hover\:from-purple-500:hover,
+.to-fuchsia-600,
+.hover\:to-fuchsia-500:hover {
+  background: var(--stay-brand) !important;
+  background-color: var(--stay-brand) !important;
+}
+
+.bg-purple-900\/50 {
+  background-color: rgba(17, 24, 39, 0.62) !important;
+}
+
+.text-purple-300,
+.text-purple-400,
+.text-purple-500,
+.text-purple-600,
+.hover\:text-purple-300:hover,
+.hover\:text-purple-400:hover,
+.hover\:text-purple-600:hover {
+  color: var(--stay-brand) !important;
+}
+
+.border-purple-600,
+.hover\:border-purple-500\/30:hover,
+.focus\:border-purple-600:focus {
+  border-color: var(--stay-brand) !important;
+}
+
+.focus\:ring-purple-500:focus,
+.focus\:ring-purple-600:focus {
+  --tw-ring-color: rgba(15, 118, 110, 0.22) !important;
+}
+
+.shadow-purple-600\/10,
+.shadow-purple-900\/30 {
+  --tw-shadow-color: rgba(15, 118, 110, 0.18) !important;
+}
+
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl {
+  border-radius: 8px !important;
+}
+
+.shadow-md,
+.shadow-lg,
+.shadow-xl,
+.shadow-2xl {
+  box-shadow: var(--stay-shadow) !important;
+}
+
+section {
+  scroll-margin-top: 96px;
+}
+
+main,
+.min-h-screen {
+  background-color: var(--stay-bg);
+}
+
+.bg-white {
+  background-color: var(--stay-surface) !important;
+}
+
+.text-gray-800,
+.text-slate-950 {
+  color: var(--stay-ink) !important;
+}
+
+.text-gray-500,
+.text-gray-600,
+.text-slate-500,
+.text-slate-600 {
+  color: var(--stay-muted) !important;
+}
+
+.border-gray-100,
+.border-gray-200,
+.border-stone-100,
+.border-stone-200 {
+  border-color: var(--stay-border) !important;
+}
+
+input,
+select,
+textarea {
+  border-radius: 6px !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--stay-brand) !important;
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12) !important;
+}
+
+button,
+a[class*="bg-purple-600"],
+a[class*="bg-emerald-600"],
+button[class*="bg-emerald-600"] {
+  border-radius: 6px !important;
+}
+
+.stay-page-band {
+  background: linear-gradient(180deg, #ffffff 0%, var(--stay-bg) 100%);
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-top: 70px;
+  }
+
+  h1 {
+    overflow-wrap: anywhere;
+  }
+}

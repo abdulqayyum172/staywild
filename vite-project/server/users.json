@@ -1,0 +1,88 @@
+[
+  {
+    "id": "1",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "$2b$10$bWNKMWd6Wx1dHyqw77vp6ONMxCaKGJx1Y5nVU888puRR9wXubV0kC",
+    "createdAt": "2026-06-19T03:59:43.201Z"
+  },
+  {
+    "id": "1781841704163",
+    "name": "ayinla",
+    "email": "ayinlove172@gmail.com",
+    "password": "$2b$10$6TPnWUUzSZ4DeyFKTmceXOxxr5iLF5kcrzh5Wjz9waBFwmj4.4jlC",
+    "createdAt": "2026-06-19T04:01:44.163Z"
+  },
+  {
+    "id": "1781842074386",
+    "name": "ayinla ",
+    "email": "abdulqayyumayinla2011@gmail.com",
+    "password": "$2b$10$Nuou.8Kk65hVSlcOLkI9Ne2RQPj6rTzD7WyGzq1vltkSAYn3J2yly",
+    "createdAt": "2026-06-19T04:07:54.386Z"
+  },
+  {
+    "id": "1782163768529",
+    "name": "Test User",
+    "email": "testuser88@gmail.com",
+    "password": "$2b$10$/x6I5VGNlm7nrXJsWPsAwuovQtk4Hsdcu.iXzGCQTdRDe.PGIuCaq",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-22T21:29:28.529Z",
+    "createdAt": "2026-06-22T21:29:28.529Z"
+  },
+  {
+    "id": "1782164343172",
+    "name": "Test User",
+    "email": "testuser89@gmail.com",
+    "password": "$2b$10$YroKERGhDTfYgA4I4NiE7ORjUfegASos3rwSmdPtmauFSvAEFPkEi",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-22T21:39:03.172Z",
+    "createdAt": "2026-06-22T21:39:03.172Z"
+  },
+  {
+    "id": "1782165246555",
+    "name": "Test User 90",
+    "email": "testuser90@gmail.com",
+    "password": "$2b$10$KcQ0vhnjNVTHVB2DHnCile8/WweYkmIiGJCLKPz5phqYVeVv3TVI.",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-22T21:54:06.555Z",
+    "createdAt": "2026-06-22T21:54:06.559Z"
+  },
+  {
+    "id": "1782165438569",
+    "name": "Ayinlove",
+    "email": "admin8835@gmail.com",
+    "password": "$2b$10$pvf90SW7uLRj0grLIsnBZ.uRzUtd0alQHCJwy2gb55k2G/mb3a3s2",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-22T21:57:18.569Z",
+    "createdAt": "2026-06-22T21:57:18.573Z"
+  },
+  {
+    "id": "1782169799015",
+    "name": "Ayinla ",
+    "email": "controller8835@gmail.com",
+    "password": "$2b$10$UEMAxWg0ijAtMQ1Rg1a7.O2x2vEoSPEZ71YGJ1JNnNFWosGxhNdpa",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-22T23:09:59.015Z",
+    "createdAt": "2026-06-22T23:09:59.015Z"
+  },
+  {
+    "id": "26f5e082-654c-4ed2-9748-c01f6018038f",
+    "name": "Ayinla",
+    "email": "abdulqayyumayinla@gmail.com",
+    "password": "$2b$10$YMPyS53Pq.PlclEyyMz0H.KledDJHV2AOfklXR5Na3fs.YDiA0u.2",
+    "role": "client",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-25T22:01:28.311Z",
+    "createdAt": "2026-06-25T22:01:28.311Z"
+  },
+  {
+    "id": "91c3df52-9460-4af4-be81-4d0393e463c0",
+    "name": "Admin",
+    "email": "abdulqayyumayinla1707@gmail.com",
+    "password": "$2b$10$BhdASy59ahPbK58DhMHyuO2R.OQEkZz1AdVA/zylcn3Un.yeurYzi",
+    "role": "admin",
+    "emailVerified": true,
+    "verifiedAt": "2026-06-29T21:35:01.630Z",
+    "createdAt": "2026-06-29T21:35:01.630Z"
+  }
+]
