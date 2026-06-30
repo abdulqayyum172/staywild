@@ -1897,7 +1897,7 @@ const fallbackPropertyImage = "https://images.unsplash.com/photo-1600585154340-b
 // Export Entry Point with Login Wrapper
 export default function Admin() {
   const { user, adminLogin, adminSignup, logout } = useAuth();
-  const [mode, setMode] = useState("signin");
+  const mode = "signin";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -1989,26 +1989,7 @@ export default function Admin() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 rounded-xl border border-slate-200 bg-slate-50 p-1">
-            {[
-              { id: "signin", label: "Sign In" },
-              { id: "signup", label: "Sign Up" },
-            ].map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  setMode(item.id);
-                  setFormError("");
-                }}
-                className={`h-10 rounded-lg text-sm font-bold tracking-wide transition-all ${
-                  mode === item.id ? "bg-white text-emerald-700 shadow-sm" : "text-slate-500 hover:text-slate-900"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+          
 
           {formError && (
             <div className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs font-semibold text-red-800 flex items-center gap-2">
