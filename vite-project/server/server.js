@@ -22,15 +22,43 @@ if (fs.existsSync(settingsPath)) {
   }
 }
 
+const normalizeOrigin = (value) => {
+  const cleaned = String(value || "").trim().replace(/\/+$/, "");
+
+  if (!cleaned) {
+    return "";
+  }
+
+  const url = /^https?:\/\//i.test(cleaned) ? cleaned : `https://${cleaned}`;
+
+  try {
+    return new URL(url).origin;
+  } catch {
+    return cleaned;
+  }
+};
+
+const parseOrigins = (...values) => [
+  ...new Set(
+    values
+      .flatMap((value) => String(value || "").split(","))
+      .map(normalizeOrigin)
+      .filter(Boolean)
+  ),
+];
+
 const config = {
   port: Number(process.env.PORT) || 5000,
   appMode: process.env.APP_MODE || "professional-serious",
   jwtSecret: process.env.JWT_SECRET || "staynest_dev_secret_change_me",
-  clientOrigins: (process.env.CLIENT_ORIGIN || "http://localhost:5173,http://localhost:4173")
-    .split(",")
-    .map((origin) => origin.trim())
-    .map((origin) => origin.replace(/\/+$/, ""))
-    .filter(Boolean),
+  clientOrigins: parseOrigins(
+    process.env.CLIENT_ORIGIN,
+    process.env.FRONTEND_URL,
+    process.env.APP_URL,
+    process.env.VERCEL_URL,
+    "http://localhost:5173",
+    "http://localhost:4173"
+  ),
   gmailUser: persistentSettings.gmailUser || process.env.GMAIL_USER || "ayinlove172@gmail.com",
   gmailAppPassword: persistentSettings.gmailAppPassword || process.env.GMAIL_APP_PASSWORD || "",
   brevoApiKey: persistentSettings.brevoApiKey || process.env.BREVO_API_KEY || "",
@@ -38,7 +66,7 @@ const config = {
   brevoSenderName: persistentSettings.brevoSenderName || process.env.BREVO_SENDER_NAME || "StayNest",
   preferredProvider: persistentSettings.preferredProvider || process.env.PREFERRED_PROVIDER || "auto",
   adminEmail: process.env.ADMIN_EMAIL || "abdulqayyumayinla1707@gmail.com",
-  appUrl: process.env.APP_URL || "http://localhost:5173",
+  appUrl: process.env.APP_URL || process.env.FRONTEND_URL || normalizeOrigin(process.env.CLIENT_ORIGIN) || "http://localhost:5173",
   codeExpiryMinutes: 15,
   maxVerifyAttempts: 5,
   maxSavedProperties: 100,
@@ -83,12 +111,13 @@ const app = express();
 app.use(
   cors({
     origin(origin, callback) {
-      const normalizedOrigin = origin?.replace(/\/+$/, "");
+      const normalizedOrigin = normalizeOrigin(origin);
       if (!origin || config.clientOrigins.includes(normalizedOrigin)) {
         callback(null, true);
         return;
       }
 
+      console.warn(`Blocked CORS origin: ${origin}. Allowed origins: ${config.clientOrigins.join(", ")}`);
       callback(new Error("Origin is not allowed by CORS"));
     },
     credentials: true,
@@ -2148,6 +2177,7 @@ app.use((error, _req, res, next) => {
 app.listen(config.port, () => {
   console.log(`StayNest API is running on port ${config.port}`);
   console.log(`Backend mode: ${activeBackendMode.label} (${activeBackendMode.id})`);
+  console.log(`Allowed client origins: ${config.clientOrigins.join(", ")}`);
 
   const provider = config.preferredProvider === "auto"
     ? (config.gmailAppPassword ? "gmail" : (config.brevoApiKey ? "brevo" : "logger"))
