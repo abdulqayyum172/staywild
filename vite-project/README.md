@@ -83,6 +83,22 @@ Deploy the backend Node server using:
   - `CLIENT_ORIGIN` must be the frontend origin only, with no path at the end.
   - The backend also accepts `FRONTEND_URL` as an alias for CORS if your host uses that name.
 
+### Connect Separate Deployments
+When the frontend and backend are deployed to different domains, both sides must know about each other:
+
+1. In the frontend hosting dashboard, set `VITE_API_URL` to the backend API URL:
+   ```bash
+   VITE_API_URL=https://your-backend-domain.com/api
+   ```
+2. In the backend hosting dashboard, set the allowed frontend URL:
+   ```bash
+   CLIENT_ORIGIN=https://your-frontend-domain.com
+   APP_URL=https://your-frontend-domain.com
+   ```
+3. Redeploy both services.
+4. Open `https://your-backend-domain.com/api/health`. It should return JSON with `"status": "ok"`.
+5. Open the frontend browser console. If you see a CORS error, the value in `CLIENT_ORIGIN` does not exactly match the frontend domain shown in the browser address bar.
+
 #### ⚠️ CRITICAL: Persistent Disk Setup (Render/Fly.io)
 Because StayNest uses local JSON files under the `server/` directory as its database, **you must mount a persistent disk/volume** on your hosting provider to prevent data loss whenever the server restarts or redeploys:
 1. **Create a Disk**: In the Render dashboard, create and attach a persistent Disk to your web service.

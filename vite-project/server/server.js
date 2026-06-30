@@ -66,7 +66,9 @@ const config = {
   brevoSenderName: persistentSettings.brevoSenderName || process.env.BREVO_SENDER_NAME || "StayNest",
   preferredProvider: persistentSettings.preferredProvider || process.env.PREFERRED_PROVIDER || "auto",
   adminEmail: process.env.ADMIN_EMAIL || "abdulqayyumayinla1707@gmail.com",
-  appUrl: process.env.APP_URL || process.env.FRONTEND_URL || normalizeOrigin(process.env.CLIENT_ORIGIN) || "http://localhost:5173",
+  appUrl:
+    normalizeOrigin(process.env.APP_URL || process.env.FRONTEND_URL || String(process.env.CLIENT_ORIGIN || "").split(",")[0]) ||
+    "http://localhost:5173",
   codeExpiryMinutes: 15,
   maxVerifyAttempts: 5,
   maxSavedProperties: 100,
@@ -1813,7 +1815,7 @@ app.patch(
   "/api/admin/inquiries/:id/status",
   requireAuth,
   requireAdmin,
-  asyncRoute(async (req, res, next) => {
+  asyncRoute(async (req, res) => {
     const id = req.params.id;
     const { status } = req.body;
     
