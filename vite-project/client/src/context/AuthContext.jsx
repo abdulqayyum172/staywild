@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { AUTH_API_URL } from "../lib/api";
 
 const AuthContext = createContext(null);
-
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000/api") + "/auth";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -20,7 +19,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch(`${API_URL}/me`, {
+        const response = await fetch(`${AUTH_API_URL}/me`, {
           headers: {
             "Authorization": `Bearer ${storedToken}`,
           },
@@ -48,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${AUTH_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +75,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (name, email, password) => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/signup`, {
+      const response = await fetch(`${AUTH_API_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +110,7 @@ export const AuthProvider = ({ children }) => {
   const verifyEmail = async (email, code) => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/verify-email`, {
+      const response = await fetch(`${AUTH_API_URL}/verify-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +138,7 @@ export const AuthProvider = ({ children }) => {
   const resendCode = async (email) => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/resend-code`, {
+      const response = await fetch(`${AUTH_API_URL}/resend-code`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +162,7 @@ export const AuthProvider = ({ children }) => {
   const adminLogin = async (email, password) => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/admin/login`, {
+      const response = await fetch(`${AUTH_API_URL}/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -191,7 +190,7 @@ export const AuthProvider = ({ children }) => {
   const adminSignup = async (name, email, password) => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/admin/signup`, {
+      const response = await fetch(`${AUTH_API_URL}/admin/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

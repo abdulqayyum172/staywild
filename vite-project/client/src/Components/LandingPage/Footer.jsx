@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Linkedin, Send, Mail, Phone, MapPin, Award, CheckCircle } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,6 @@ const Footer = () => {
     setStatus({ type: "", message: "" });
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
       const response = await fetch(`${API_URL}/subscribe`, {
         method: "POST",
         headers: {

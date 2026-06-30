@@ -29,6 +29,7 @@ const config = {
   clientOrigins: (process.env.CLIENT_ORIGIN || "http://localhost:5173,http://localhost:4173")
     .split(",")
     .map((origin) => origin.trim())
+    .map((origin) => origin.replace(/\/+$/, ""))
     .filter(Boolean),
   gmailUser: persistentSettings.gmailUser || process.env.GMAIL_USER || "ayinlove172@gmail.com",
   gmailAppPassword: persistentSettings.gmailAppPassword || process.env.GMAIL_APP_PASSWORD || "",
@@ -82,7 +83,8 @@ const app = express();
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || config.clientOrigins.includes(origin)) {
+      const normalizedOrigin = origin?.replace(/\/+$/, "");
+      if (!origin || config.clientOrigins.includes(normalizedOrigin)) {
         callback(null, true);
         return;
       }

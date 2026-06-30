@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -21,7 +22,6 @@ const Contact = () => {
     setSuccess(false);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
       const response = await fetch(`${API_URL}/contact`, {
         method: "POST",
         headers: {
