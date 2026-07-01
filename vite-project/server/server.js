@@ -1589,6 +1589,9 @@ app.post(
       subject: "Your StayNest verification code",
       html: verificationEmailHtml({ name, code }),
     });
+    } catch (err) {
+      console.error("Signup email failed:", err.message || err);
+    }
 
     res.status(202).json({
       email: normalizedEmail,
