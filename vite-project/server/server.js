@@ -2269,13 +2269,18 @@ app.use((req, _res, next) => {
   next(createHttpError(404, `Route not found: ${req.method} ${req.originalUrl}`));
 });
 
-app.use((error, _req, res, next) => {
-  void next;
-
+app.use((error, _req, res, _next) => {
+  // Determine HTTP status code, default to 500
   const status = error.status || 500;
-  const message = status >= 500 ? "Internal server error" : error.message;
 
-  if (status >= 500) {
+  // Use error message for client errors, generic for server errors in production
+  const isProd = process.env.NODE_ENV === "production";
+  const message = isProd && status >= 500
+    ? "Internal server error"
+    : error.message || "Error";
+
+  // Log detailed error in development or for server errors
+  if (!isProd || status >= 500) {
     console.error(error);
   }
 
