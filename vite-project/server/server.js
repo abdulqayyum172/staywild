@@ -1583,12 +1583,14 @@ app.post(
     });
 
     savePendingVerifications(nextPendingList);
-    await sendEmail({
-      toEmail: normalizedEmail,
-      toName: name,
-      subject: "Your StayNest verification code",
-      html: verificationEmailHtml({ name, code }),
-    });
+    // Attempt to send verification email, but tolerate failures to avoid breaking the signup flow
+    try {
+      await sendEmail({
+        toEmail: normalizedEmail,
+        toName: name,
+        subject: "Your StayNest verification code",
+        html: verificationEmailHtml({ name, code }),
+      });
     } catch (err) {
       console.error("Signup email failed:", err.message || err);
     }
